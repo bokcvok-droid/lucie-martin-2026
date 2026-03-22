@@ -167,19 +167,47 @@
   <div class="divider"></div>
   <div class="cards">
     <div class="card"><div class="card-icon">📅</div><div class="card-title">Datum</div><div class="card-text">Sobota<br>18. dubna 2026</div></div>
-    <div class="card"><div class="card-icon">🕛</div><div class="card-title">Čas</div><div class="card-text">Příjezd do <strong>12:00</strong><br>Obřad v <strong>12:30</strong></div></div>
+    <div class="card"><div class="card-icon">🕛</div><div class="card-title">Čas</div><div class="card-text">Obřad začíná v <strong>12:30</strong></div></div>
     <div class="card"><div class="card-icon">📍</div><div class="card-title">Místo</div><div class="card-text">Těšický plac<br>Mikulčice</div></div>
-    <div class="card"><div class="card-icon">🚌</div><div class="card-title">Doprava</div><div class="card-text">Ke konci dne zajistíme rozvoz pro všechny hosty</div></div>
+    <div class="card"><div class="card-icon">🚌</div><div class="card-title">Doprava</div><div class="card-text">Ke konci dne zajistíme rozvoz pro všechny hosty.<br><br>Pokud přespáváte v okolí a potřebujete odvoz i na svatbu, dejte nám prosím vědět.</div></div>
   </div>
 
-<!-- MAPA -->
-<div class="map-wrap">
-  <iframe
-    src="https://maps.google.com/maps?q=48.823066,17.051899&output=embed&hl=cs&z=17"
-    allowfullscreen="" loading="lazy"
-    referrerpolicy="no-referrer-when-downgrade">
-  </iframe>
-</div>
+  <!-- KONTAKT -->
+  <div style="margin-top:1.5rem;background:rgba(255,255,255,0.85);border:1px solid rgba(126,155,122,.22);border-radius:12px;padding:1.5rem 1.3rem;text-align:center;backdrop-filter:blur(2px);">
+    <div style="font-size:1.6rem;margin-bottom:.5rem;">📞</div>
+    <div style="font-family:Georgia,serif;font-size:.92rem;color:var(--sage);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem;">Kontakt kdyby něco</div>
+    <a href="tel:+420773453293" style="font-family:Georgia,serif;font-size:1.2rem;color:var(--dark);text-decoration:none;letter-spacing:.04em;">773 453 293</a>
+  </div>
+
+  <!-- PROGRAM -->
+  <div style="margin-top:1.5rem;background:rgba(255,255,255,0.85);border:1px solid rgba(126,155,122,.22);border-radius:12px;overflow:hidden;backdrop-filter:blur(2px);">
+    <button onclick="this.parentElement.classList.toggle('open')"
+      style="width:100%;padding:1.3rem 1.5rem;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:Georgia,serif;font-size:1rem;color:var(--dark);text-align:left;">
+      <span>🗓️ &nbsp;<span style="color:var(--sage);text-transform:uppercase;letter-spacing:.06em;font-size:.92rem;">Program svatby</span></span>
+      <span class="arrow" style="font-size:1rem;color:var(--sage);transition:transform .3s;">▼</span>
+    </button>
+    <div class="program-body" style="max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s;">
+      <div style="padding:0 1.5rem 1.5rem;color:var(--dark-l);font-size:.9rem;line-height:2;">
+        <p style="font-family:Georgia,serif;font-style:italic;color:var(--sage);">Program bude brzy doplněn…</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAPA -->
+  <div class="map-wrap">
+    <iframe
+      src="https://maps.google.com/maps?q=48.823066,17.051899&output=embed&hl=cs&z=17"
+      allowfullscreen="" loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
+</section>
+
+    /* Program rozklikávání */
+    .open .program-body { max-height: 600px !important; }
+    .open .arrow { transform: rotate(180deg); }
+  </style>
+
 
 
 <!-- DRESS CODE -->
