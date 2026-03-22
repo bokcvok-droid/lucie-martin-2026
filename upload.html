@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nahrát fotky | Lucie & Martin</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #FAF8F5; --gold: #C4956A; --gold-l: #D4AC82;
+      --brown: #3D3028; --brown-l: #6B5744;
+    }
+    body {
+      background: var(--cream); color: var(--brown);
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      min-height: 100svh; display: flex; flex-direction: column;
+      align-items: center; padding: 2rem 1rem;
+    }
+    .container { width: 100%; max-width: 580px; }
+    .header { text-align: center; margin-bottom: 2rem; }
+    .header h1 { font-family: Georgia, serif; font-weight: 400; font-size: clamp(2rem,7vw,2.6rem); }
+    .header h1 em { color: var(--gold); font-style: italic; }
+    .header p { color: var(--brown-l); margin-top: .4rem; }
+    .divider { width: 60px; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); margin: .9rem auto; }
+    .drop-zone {
+      border: 2px dashed rgba(196,149,106,.45); border-radius: 14px;
+      padding: 2.8rem 1.5rem; text-align: center; background: #fff;
+      cursor: pointer; transition: border-color .25s, background .25s; position: relative;
+    }
+    .drop-zone.drag-over { border-color: var(--gold); background: rgba(196,149,106,.06); }
+    .drop-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .drop-icon { font-size: 2.8rem; margin-bottom: .8rem; }
+    .drop-text { font-family: Georgia, serif; font-size: 1.05rem; color: var(--brown-l); }
+    .drop-sub { font-size: .82rem; color: #aaa; margin-top: .4rem; }
+    .btn-upload {
+      display: block; width: 100%; margin-top: 1.2rem; padding: .9rem;
+      background: var(--gold); color: #fff; border: none; border-radius: 8px;
+      font-size: 1rem; cursor: pointer; font-family: Georgia, serif;
+      letter-spacing: .03em; transition: background .25s;
+    }
+    .btn-upload:hover { background: var(--brown-l); }
+    .btn-upload:disabled { background: #ccc; cursor: not-allowed; }
+    .file-list { margin-top: 1.2rem; display: flex; flex-direction: column; gap: .6rem; }
+    .fi {
+      background: #fff; border: 1px solid rgba(196,149,106,.2);
+      border-radius: 8px; padding: .7rem 1rem;
+    }
+    .fi-row { display: flex; align-items: center; gap: .8rem; }
+    .fi-name { flex: 1; font-size: .88rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .fi-status { font-size: .78rem; color: var(--brown-l); white-space: nowrap; }
+    .fi-status.ok { color: #4a8a4a; }
+    .fi-status.err { color: #a04040; }
+    .pbar-wrap { height: 3px; background: #eee; border-radius: 2px; overflow: hidden; margin-top: .35rem; }
+    .pbar { height: 100%; background: var(--gold); border-radius: 2px; width: 0; transition: width .3s; }
+    .back { display: block; text-align: center; margin-top: 1.8rem; color: var(--brown-l); text-decoration: none; font-size: .88rem; }
+    .back:hover { color: var(--gold); }
+    .done-msg { text-align: center; font-family: Georgia, serif; font-style: italic; color: var(--gold); margin-top: 1.2rem; font-size: 1.1rem; display: none; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>Lucie <em>&amp;</em> Martin</h1>
+    <div class="divider"></div>
+    <p>Nahrát fotky ze svatebního dne 📸</p>
+  </div>
+
+  <div class="drop-zone" id="dropZone">
+    <input type="file" id="fileInput" accept="image/*,video/*" multiple>
+    <div class="drop-icon">📷</div>
+    <p class="drop-text">Přetáhněte fotky sem</p>
+    <p class="drop-sub">nebo klikněte pro výběr ze zařízení</p>
+  </div>
+
+  <button class="btn-upload" id="uploadBtn" disabled>Nahrát fotky</button>
+  <div class="file-list" id="fileList"></div>
+  <p class="done-msg" id="doneMsg">Děkujeme za fotky! 💛</p>
+  <a href="index.html" class="back">← Zpět na svatební web</a>
+</div>
+
+<script>
+  // !! ZMĚŇ NA URL svého Cloudflare Workeru !!
+  const WORKER = "https://wedding-photos.TVUJ-SUBDOMAIN.workers.dev";
+
+  const dropZone  = document.getElementById('dropZone');
+  const fileInput = document.getElementById('fileInput');
+  const uploadBtn = document.getElementById('uploadBtn');
+  const fileList  = document.getElementById('fileList');
+  const doneMsg   = document.getElementById('doneMsg');
+  let files = [];
+
+  dropZone.addEventListener('dragover',  e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+  dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.classList.remove('drag-over'); setFiles(e.dataTransfer.files); });
+  fileInput.addEventListener('change',   () => setFiles(fileInput.files));
+
+  function setFiles(fl) {
+    files = Array.from(fl).filter(f => f.type.startsWith('image/') || f.type.startsWith('video/'));
+    fileList.innerHTML = '';
+    files.forEach((f, i) => {
+      fileList.insertAdjacentHTML('beforeend', `
+        <div class="fi" id="fi-${i}">
+          <div class="fi-row">
+            <span class="fi-name">${f.name}</span>
+            <span class="fi-status" id="st-${i}">Čeká</span>
+          </div>
+          <div class="pbar-wrap"><div class="pbar" id="pb-${i}"></div></div>
+        </div>`);
+    });
+    uploadBtn.disabled = !files.length;
+    doneMsg.style.display = 'none';
+  }
+
+  uploadBtn.addEventListener('click', async () => {
+    uploadBtn.disabled = true;
+    let allOk = true;
+    for (let i = 0; i < files.length; i++) {
+      const f  = files[i];
+      const st = document.getElementById(`st-${i}`);
+      const pb = document.getElementById(`pb-${i}`);
+      st.textContent = 'Nahrávám…'; st.className = 'fi-status';
+      try {
+        // 1. Získej klíč a upload URL z Workeru
+        const r = await fetch(`${WORKER}/presign?filename=${encodeURIComponent(f.name)}&type=${encodeURIComponent(f.type)}`);
+        const { uploadUrl } = await r.json();
+        // 2. Nahraj přímo na R2 přes Worker
+        await uploadXHR(f, uploadUrl, p => pb.style.width = p + '%');
+        st.textContent = '✓ Nahráno'; st.className = 'fi-status ok'; pb.style.width = '100%';
+      } catch(e) {
+        st.textContent = '✗ Chyba'; st.className = 'fi-status err'; allOk = false;
+        console.error(e);
+      }
+    }
+    if (allOk) doneMsg.style.display = 'block';
+    uploadBtn.disabled = false;
+  });
+
+  function uploadXHR(file, url, onProgress) {
+    return new Promise((res, rej) => {
+      const x = new XMLHttpRequest();
+      x.open('PUT', url);
+      x.setRequestHeader('Content-Type', file.type);
+      x.upload.onprogress = e => e.lengthComputable && onProgress(Math.round(e.loaded/e.total*100));
+      x.onload  = () => x.status < 300 ? res() : rej(new Error('HTTP ' + x.status));
+      x.onerror = () => rej(new Error('Network error'));
+      x.send(file);
+    });
+  }
+</script>
+</body>
+</html>
