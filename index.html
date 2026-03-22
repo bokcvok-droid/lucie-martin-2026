@@ -27,7 +27,8 @@
       gap: 2px; overflow: hidden;
     }
     .photo-bg img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .photo-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(248,247,244,0.82); }
+    /* SNÍŽENO: opacity z 0.82 na 0.62 → fotky více viditelné */
+    .photo-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(248,247,244,0.62); }
 
     /* ── HERO ── */
     .hero {
@@ -36,7 +37,8 @@
       text-align: center; padding: 2rem 1rem; position: relative;
     }
     .hero-card {
-      background: rgba(255,255,255,0.65); backdrop-filter: blur(14px);
+      /* SNÍŽENO: blur z 14px na 6px */
+      background: rgba(255,255,255,0.72); backdrop-filter: blur(6px);
       border: 1px solid rgba(166,187,177,.4); border-radius: 20px;
       padding: clamp(2rem,5vw,3.5rem) clamp(1.5rem,6vw,4rem);
       max-width: 640px; width: 100%;
@@ -62,17 +64,25 @@
     .sec-title em { color: var(--sage); }
     .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 1.2rem; margin-top: 2rem; }
     .card {
-      background: rgba(255,255,255,0.82); border: 1px solid rgba(126,155,122,.22);
+      background: rgba(255,255,255,0.85); border: 1px solid rgba(126,155,122,.22);
       border-radius: 12px; padding: 1.8rem 1.3rem; text-align: center;
-      transition: transform .25s, box-shadow .25s; backdrop-filter: blur(4px);
+      transition: transform .25s, box-shadow .25s; backdrop-filter: blur(2px);
     }
     .card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(126,155,122,.18); }
     .card-icon { font-size: 1.8rem; margin-bottom: .8rem; }
     .card-title { font-family: Georgia, serif; font-size: .92rem; color: var(--sage); text-transform: uppercase; letter-spacing: .06em; margin-bottom: .4rem; }
     .card-text { font-size: .88rem; color: var(--dark-l); line-height: 1.7; }
 
+    /* mapa */
+    .map-wrap {
+      margin-top: 2rem; border-radius: 14px; overflow: hidden;
+      box-shadow: 0 4px 20px rgba(126,155,122,.2);
+      border: 1px solid rgba(126,155,122,.2);
+    }
+    .map-wrap iframe { display: block; width: 100%; height: 340px; border: 0; }
+
     /* ── DRESS CODE ── */
-    .dress-bg { background: rgba(213,214,198,0.72); backdrop-filter: blur(8px); padding: clamp(3rem,7vw,5rem) clamp(1rem,5vw,3rem); }
+    .dress-bg { background: rgba(213,214,198,0.75); backdrop-filter: blur(3px); padding: clamp(3rem,7vw,5rem) clamp(1rem,5vw,3rem); }
     .dress-inner { max-width: 860px; margin: 0 auto; text-align: center; }
     .swatches { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.8rem; flex-wrap: wrap; }
     .swatch { display: flex; flex-direction: column; align-items: center; gap: .5rem; }
@@ -83,14 +93,14 @@
 
     /* ── DARY ── */
     .gift-box {
-      background: rgba(255,255,255,0.82); border: 1px solid rgba(205,165,176,.3);
-      border-radius: 14px; padding: 2.2rem; text-align: center; margin-top: 2rem; backdrop-filter: blur(4px);
+      background: rgba(255,255,255,0.85); border: 1px solid rgba(205,165,176,.3);
+      border-radius: 14px; padding: 2.2rem; text-align: center; margin-top: 2rem; backdrop-filter: blur(2px);
     }
     .gift-emoji { font-size: 2.5rem; margin-bottom: .8rem; }
     .gift-poem { font-family: Georgia, serif; font-style: italic; font-size: .95rem; color: var(--dark-l); line-height: 1.95; }
 
     /* ── QR ── */
-    .qr-bg { background: rgba(58,70,55,0.90); backdrop-filter: blur(10px); padding: clamp(3rem,7vw,5rem) clamp(1rem,5vw,3rem); text-align: center; }
+    .qr-bg { background: rgba(58,70,55,0.88); backdrop-filter: blur(4px); padding: clamp(3rem,7vw,5rem) clamp(1rem,5vw,3rem); text-align: center; }
     .qr-inner { max-width: 560px; margin: 0 auto; }
     .qr-title { font-family: Georgia, serif; font-size: clamp(1.5rem,4vw,2.1rem); font-weight: 400; color: var(--rose-l); margin-bottom: .8rem; }
     .qr-sub { color: rgba(213,214,198,.8); font-size: .94rem; line-height: 1.7; margin-bottom: 2rem; }
@@ -130,9 +140,6 @@
 </div>
 <div class="photo-overlay"></div>
 
-
-
-
 <!-- HERO -->
 <div class="hero" id="top">
   <div class="hero-card">
@@ -165,17 +172,15 @@
     <div class="card"><div class="card-icon">🚌</div><div class="card-title">Doprava</div><div class="card-text">Ke konci dne zajistíme rozvoz pro všechny hosty</div></div>
   </div>
 
-  <!-- MAPA -->
-  <div style="margin-top:2rem;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(126,155,122,.2);border:1px solid rgba(126,155,122,.2);">
+  <!-- MAPA — funkční bez API klíče -->
+  <div class="map-wrap">
     <iframe
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2603.5!2d17.0385!3d48.8201!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4713b3b3b3b3b3b3%3A0x0!2sT%C4%9B%C5%A1ick%C3%BD+plac%2C+Mikul%C4%8Dice!5e0!3m2!1scs!2scz!4v1234567890"
-      width="100%" height="340" style="border:0;display:block;"
+      src="https://maps.google.com/maps?q=T%C4%9B%C5%A1ick%C3%BD+plac%2C+Mikul%C4%8Dice&output=embed&hl=cs&z=15"
       allowfullscreen="" loading="lazy"
       referrerpolicy="no-referrer-when-downgrade">
     </iframe>
   </div>
 </section>
-
 
 <!-- DRESS CODE -->
 <div class="dress-bg">
@@ -223,7 +228,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
-  // Countdown
   const weddingDate = new Date('2026-04-18T12:30:00');
   function tick() {
     const diff = weddingDate - new Date();
@@ -243,16 +247,13 @@
   }
   tick(); setInterval(tick, 1000);
 
-  // QR kód — !! ZKONTROLUJ ŽE URL JE SPRÁVNÁ !!
   const UPLOAD_URL = "https://bokcvok-droid.github.io/lucie-martin-2026/upload.html";
   function initQR() {
     if (typeof QRCode === 'undefined') { setTimeout(initQR, 150); return; }
     document.getElementById('qrcode').innerHTML = '';
     new QRCode(document.getElementById("qrcode"), {
-      text: UPLOAD_URL,
-      width: 180, height: 180,
-      colorDark: "#3a4637",
-      colorLight: "#FFFFFF",
+      text: UPLOAD_URL, width: 180, height: 180,
+      colorDark: "#3a4637", colorLight: "#FFFFFF",
       correctLevel: QRCode.CorrectLevel.M
     });
   }
