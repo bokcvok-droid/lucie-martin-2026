@@ -28,7 +28,7 @@
     }
     .photo-bg img { width: 100%; height: 100%; object-fit: cover; display: block; }
     /* SNÍŽENO: opacity z 0.82 na 0.62 → fotky více viditelné */
-    .photo-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(248,247,244,0.62); }
+    .photo-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(248,247,244,0.31); }
 
     /* ── HERO ── */
     .hero {
@@ -172,15 +172,15 @@
     <div class="card"><div class="card-icon">🚌</div><div class="card-title">Doprava</div><div class="card-text">Ke konci dne zajistíme rozvoz pro všechny hosty</div></div>
   </div>
 
-  <!-- MAPA — funkční bez API klíče -->
-  <div class="map-wrap">
-    <iframe
-      src="https://maps.google.com/maps?q=T%C4%9B%C5%A1ick%C3%BD+plac%2C+Mikul%C4%8Dice&output=embed&hl=cs&z=15"
-      allowfullscreen="" loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
-  </div>
-</section>
+<!-- MAPA -->
+<div class="map-wrap">
+  <iframe
+    src="https://maps.google.com/maps?q=48.823066,17.051899&output=embed&hl=cs&z=17"
+    allowfullscreen="" loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade">
+  </iframe>
+</div>
+
 
 <!-- DRESS CODE -->
 <div class="dress-bg">
