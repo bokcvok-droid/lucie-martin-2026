@@ -18,7 +18,6 @@
     html { scroll-behavior: smooth; }
     body { color: var(--dark); font-family: 'Helvetica Neue', Arial, sans-serif; }
 
-    /* ── KOLÁŽ POZADÍ ── */
     .photo-bg {
       position: fixed; inset: 0; z-index: -2;
       display: grid;
@@ -27,17 +26,14 @@
       gap: 2px; overflow: hidden;
     }
     .photo-bg img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    /* SNÍŽENO: opacity z 0.82 na 0.62 → fotky více viditelné */
     .photo-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(248,247,244,0.31); }
 
-    /* ── HERO ── */
     .hero {
       min-height: 100svh; display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       text-align: center; padding: 2rem 1rem; position: relative;
     }
     .hero-card {
-      /* SNÍŽENO: blur z 14px na 6px */
       background: rgba(255,255,255,0.72); backdrop-filter: blur(6px);
       border: 1px solid rgba(166,187,177,.4); border-radius: 20px;
       padding: clamp(2rem,5vw,3.5rem) clamp(1.5rem,6vw,4rem);
@@ -58,7 +54,6 @@
     .scroll-arrow { position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%); color: var(--sage); font-size: 1.3rem; text-decoration: none; animation: bounce 2s infinite; }
     @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(7px)} }
 
-    /* ── SEKCE ── */
     .section { padding: clamp(3rem,7vw,5rem) clamp(1rem,5vw,3rem); max-width: 860px; margin: 0 auto; }
     .sec-title { font-family: Georgia, serif; font-size: clamp(1.5rem,4vw,2.3rem); font-weight: 400; text-align: center; }
     .sec-title em { color: var(--sage); }
@@ -73,7 +68,34 @@
     .card-title { font-family: Georgia, serif; font-size: .92rem; color: var(--sage); text-transform: uppercase; letter-spacing: .06em; margin-bottom: .4rem; }
     .card-text { font-size: .88rem; color: var(--dark-l); line-height: 1.7; }
 
-    /* mapa */
+    .contact-box {
+      margin-top: 1.5rem; background: rgba(255,255,255,0.85);
+      border: 1px solid rgba(126,155,122,.22); border-radius: 12px;
+      padding: 1.5rem 1.3rem; text-align: center; backdrop-filter: blur(2px);
+    }
+    .contact-box .c-icon { font-size: 1.6rem; margin-bottom: .5rem; }
+    .contact-box .c-label { font-family: Georgia, serif; font-size: .92rem; color: var(--sage); text-transform: uppercase; letter-spacing: .06em; margin-bottom: .4rem; }
+    .contact-box a { font-family: Georgia, serif; font-size: 1.2rem; color: var(--dark); text-decoration: none; letter-spacing: .04em; }
+    .contact-box a:hover { color: var(--sage); }
+
+    .accordion {
+      margin-top: 1.5rem; background: rgba(255,255,255,0.85);
+      border: 1px solid rgba(126,155,122,.22); border-radius: 12px;
+      overflow: hidden; backdrop-filter: blur(2px);
+    }
+    .accordion-btn {
+      width: 100%; padding: 1.3rem 1.5rem; background: none; border: none;
+      cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+      font-family: Georgia, serif; font-size: 1rem; color: var(--dark); text-align: left;
+    }
+    .accordion-btn:hover { background: rgba(126,155,122,.06); }
+    .accordion-btn .a-label { color: var(--sage); text-transform: uppercase; letter-spacing: .06em; font-size: .92rem; }
+    .accordion-btn .a-arrow { font-size: 1rem; color: var(--sage); transition: transform .3s; }
+    .accordion-body { max-height: 0; overflow: hidden; transition: max-height .4s ease; }
+    .accordion-body-inner { padding: 0 1.5rem 1.5rem; color: var(--dark-l); font-size: .9rem; line-height: 2; }
+    .accordion.open .accordion-body { max-height: 600px; }
+    .accordion.open .a-arrow { transform: rotate(180deg); }
+
     .map-wrap {
       margin-top: 2rem; border-radius: 14px; overflow: hidden;
       box-shadow: 0 4px 20px rgba(126,155,122,.2);
@@ -81,7 +103,6 @@
     }
     .map-wrap iframe { display: block; width: 100%; height: 340px; border: 0; }
 
-    /* ── DRESS CODE ── */
     .dress-bg { background: rgba(213,214,198,0.75); backdrop-filter: blur(3px); padding: clamp(3rem,7vw,5rem) clamp(1rem,5vw,3rem); }
     .dress-inner { max-width: 860px; margin: 0 auto; text-align: center; }
     .swatches { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.8rem; flex-wrap: wrap; }
@@ -91,7 +112,6 @@
     .swatch-name { font-size: .7rem; color: var(--dark-l); letter-spacing: .05em; text-transform: uppercase; }
     .dress-note { font-family: Georgia, serif; font-style: italic; color: var(--dark-l); margin-top: 1.4rem; font-size: .9rem; }
 
-    /* ── DARY ── */
     .gift-box {
       background: rgba(255,255,255,0.85); border: 1px solid rgba(205,165,176,.3);
       border-radius: 14px; padding: 2.2rem; text-align: center; margin-top: 2rem; backdrop-filter: blur(2px);
@@ -99,7 +119,6 @@
     .gift-emoji { font-size: 2.5rem; margin-bottom: .8rem; }
     .gift-poem { font-family: Georgia, serif; font-style: italic; font-size: .95rem; color: var(--dark-l); line-height: 1.95; }
 
-    /* ── QR ── */
     .qr-bg { background: rgba(58,70,55,0.88); backdrop-filter: blur(4px); padding: clamp(3rem,7vw,5rem) clamp(1rem,5vw,3rem); text-align: center; }
     .qr-inner { max-width: 560px; margin: 0 auto; }
     .qr-title { font-family: Georgia, serif; font-size: clamp(1.5rem,4vw,2.1rem); font-weight: 400; color: var(--rose-l); margin-bottom: .8rem; }
@@ -109,7 +128,6 @@
     .qr-link { color: var(--sage-l); font-size: .88rem; text-decoration: none; opacity: .85; display: block; margin-top: .6rem; }
     .qr-link:hover { opacity: 1; }
 
-    /* ── FOOTER ── */
     footer { text-align: center; padding: 1.8rem 1rem; font-family: Georgia, serif; font-style: italic; color: var(--dark-l); font-size: .85rem; background: rgba(248,247,244,0.7); }
   </style>
 </head>
@@ -173,21 +191,20 @@
   </div>
 
   <!-- KONTAKT -->
-  <div style="margin-top:1.5rem;background:rgba(255,255,255,0.85);border:1px solid rgba(126,155,122,.22);border-radius:12px;padding:1.5rem 1.3rem;text-align:center;backdrop-filter:blur(2px);">
-    <div style="font-size:1.6rem;margin-bottom:.5rem;">📞</div>
-    <div style="font-family:Georgia,serif;font-size:.92rem;color:var(--sage);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem;">Kontakt kdyby něco</div>
-    <a href="tel:+420773453293" style="font-family:Georgia,serif;font-size:1.2rem;color:var(--dark);text-decoration:none;letter-spacing:.04em;">773 453 293</a>
+  <div class="contact-box">
+    <div class="c-icon">📞</div>
+    <div class="c-label">Kontakt kdyby něco</div>
+    <a href="tel:+420773453293">773 453 293</a>
   </div>
 
   <!-- PROGRAM -->
-  <div style="margin-top:1.5rem;background:rgba(255,255,255,0.85);border:1px solid rgba(126,155,122,.22);border-radius:12px;overflow:hidden;backdrop-filter:blur(2px);">
-    <button onclick="this.parentElement.classList.toggle('open')"
-      style="width:100%;padding:1.3rem 1.5rem;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:Georgia,serif;font-size:1rem;color:var(--dark);text-align:left;">
-      <span>🗓️ &nbsp;<span style="color:var(--sage);text-transform:uppercase;letter-spacing:.06em;font-size:.92rem;">Program svatby</span></span>
-      <span class="arrow" style="font-size:1rem;color:var(--sage);transition:transform .3s;">▼</span>
+  <div class="accordion" id="programAccordion">
+    <button class="accordion-btn" onclick="document.getElementById('programAccordion').classList.toggle('open')">
+      <span>🗓️ &nbsp;<span class="a-label">Program svatby</span></span>
+      <span class="a-arrow">▼</span>
     </button>
-    <div class="program-body" style="max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s;">
-      <div style="padding:0 1.5rem 1.5rem;color:var(--dark-l);font-size:.9rem;line-height:2;">
+    <div class="accordion-body">
+      <div class="accordion-body-inner">
         <p style="font-family:Georgia,serif;font-style:italic;color:var(--sage);">Program bude brzy doplněn…</p>
       </div>
     </div>
@@ -202,13 +219,6 @@
     </iframe>
   </div>
 </section>
-
-    /* Program rozklikávání */
-    .open .program-body { max-height: 600px !important; }
-    .open .arrow { transform: rotate(180deg); }
-  </style>
-
-
 
 <!-- DRESS CODE -->
 <div class="dress-bg">
