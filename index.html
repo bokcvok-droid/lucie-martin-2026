@@ -18,40 +18,24 @@
     html { scroll-behavior: smooth; }
     body { color: var(--dark); font-family: 'Helvetica Neue', Arial, sans-serif; }
 
-.photo-bg {
-  position: fixed; inset: 0; z-index: -2;
-  display: flex;
-  flex-wrap: wrap;
-  overflow: hidden;
-}
-.photo-bg img {
-  width: 20%;
-  height: 25vh;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-  flex-shrink: 0;
-}
-.photo-overlay {
-  position: fixed; inset: 0; z-index: -1;
-  background: rgba(248,247,244,0.31);
-}
+    .photo-bg {
+      position: fixed; inset: 0; z-index: -2;
+      display: flex; flex-wrap: wrap; overflow: hidden;
+    }
+    .photo-bg img {
+      width: 20%; height: 25vh;
+      object-fit: cover; object-position: center;
+      display: block; flex-shrink: 0;
+      transition: opacity 1.5s ease;
+    }
+    .photo-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(248,247,244,0.31); }
 
-@media (max-width: 768px) {
-  .photo-bg img {
-    width: 33.333%;
-    height: 20vw;
-  }
-}
-
-@media (max-width: 480px) {
-  .photo-bg img {
-    width: 50%;
-    height: 30vw;
-  }
-}
-
-
+    @media (max-width: 768px) {
+      .photo-bg img { width: 33.333%; height: 20vw; }
+    }
+    @media (max-width: 480px) {
+      .photo-bg img { width: 50%; height: 30vw; }
+    }
 
     .hero {
       min-height: 100svh; display: flex; flex-direction: column;
@@ -158,29 +142,8 @@
 </head>
 <body>
 
-<!-- KOLÁŽ POZADÍ -->
-<div class="photo-bg" aria-hidden="true">
-  <img src="https://pub-88f291442e03440db00b772861f1ed5a.r2.dev/bg/20250104_134727.jpg" alt="">
-  <img src="https://pub-88f291442e03440db00b772861f1ed5a.r2.dev/bg/20250104_134733.jpg" alt="">
-  <img src="https://pub-88f291442e03440db00b772861f1ed5a.r2.dev/bg/20230715_162052.jpg" alt="">
-  <img src="https://pub-88f291442e03440db00b772861f1ed5a.r2.dev/bg/20230620_132948.jpg" alt="">
-  <img src="https://pub-88f291442e03440db00b772861f1ed5a.r2.dev/bg/20250104_134715.jpg" alt="">
-  <img src="https://pub-88f291442e03440db00b772861f1ed5a.r2.dev/bg/20241201_160326.jpg" alt="">
-  <img src="https://pub-88f291442e03440db00b772861f1ed5a.r2.dev/bg/20251125_191908.jpg" alt="">
-  <img src="https://pub-88f291442e03440db00b772861f1ed5a.r2.dev/bg/20221129_011146.jpg" alt="">
-  <img src="https://pub-88f291442e03440db00b772861f1ed5a.r2.dev/bg/20250906_122706(0).jpg" alt="">
-  <img src="https://pub-88f291442e03440db00b772861f1ed5a.r2.dev/bg/20250610_123940.jpg" alt="">
-  <img src="https://pub-88f291442e03440db00b772861f1ed5a.r2.dev/bg/20250612_141557.jpg" alt="">
-  <img src="https://pub-88f291442e03440db00b772861f1ed5a.r2.dev/bg/20250610_110058.jpg" alt="">
-  <img src="https://pub-88f291442e03440db00b772861f1ed5a.r2.dev/bg/20250608_124427.jpg" alt="">
-  <img src="https://pub-88f291442e03440db00b772861f1ed5a.r2.dev/bg/20250316_120631.jpg" alt="">
-  <img src="https://pub-88f291442e03440db00b772861f1ed5a.r2.dev/bg/20250215_100314.jpg" alt="">
-  <img src="https://pub-88f291442e03440db00b772861f1ed5a.r2.dev/bg/20250104_134738.jpg" alt="">
-  <img src="https://pub-88f291442e03440db00b772861f1ed5a.r2.dev/bg/20250118_231914.jpg" alt="">
-  <img src="https://pub-88f291442e03440db00b772861f1ed5a.r2.dev/bg/20250104_134727.jpg" alt="">
-  <img src="https://pub-88f291442e03440db00b772861f1ed5a.r2.dev/bg/20250316_120631.jpg" alt="">
-  <img src="https://pub-88f291442e03440db00b772861f1ed5a.r2.dev/bg/20250215_100314.jpg" alt="">
-</div>
+<!-- KOLÁŽ POZADÍ — dynamicky plněno JS -->
+<div class="photo-bg" id="photoBg" aria-hidden="true"></div>
 <div class="photo-overlay"></div>
 
 <!-- HERO -->
@@ -291,6 +254,95 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
+  // ── FOTKY NA POZADÍ ──────────────────────────────────────
+  const BASE = "https://pub-88f291442e03440db00b772861f1ed5a.r2.dev/bg/";
+  const ALL_PHOTOS = [
+    "0709cbc4-c9d9-4e30-b980-2c3d993ef826.jpg",
+    "20221129_011146.jpg",
+    "20230620_132948.jpg",
+    "20230715_162052.jpg",
+    "20241201_160326.jpg",
+    "20250104_134715.jpg",
+    "20250104_134727.jpg",
+    "20250104_134733.jpg",
+    "20250104_134738.jpg",
+    "20250118_231914.jpg",
+    "20250215_100314.jpg",
+    "20250316_120631.jpg",
+    "20250608_124427.jpg",
+    "20250610_110058.jpg",
+    "20250610_123940.jpg",
+    "20250612_141557.jpg",
+    "20250906_122706(0).jpg",
+    "20251125_191908.jpg",
+    "44F0659F-D201-4D58-9678-16EFE9E4ABBD.JPEG",
+    "F3BB45AD-D1B4-4935-9677-5AE9D6122721.jpg",
+    "IMG_0384.JPEG",
+    "IMG_1952.JPEG",
+    "IMG_2059.JPEG",
+    "IMG_2081.JPEG",
+    "IMG_2246.JPEG",
+    "IMG_2250.JPEG",
+    "IMG_2331.JPEG",
+    "IMG_3297.JPEG",
+    "IMG_3394.JPEG",
+    "IMG_3455.JPEG",
+    "IMG_3776.JPG",
+    "IMG_3997.JPEG",
+    "IMG_3999.JPEG",
+    "IMG_4098.JPEG",
+    "IMG_4141.JPG",
+    "IMG_6024.JPG",
+    "IMG_7906.JPG",
+    "IMG_7907.JPG",
+    "IMG_8945.JPEG",
+    "IMG_9028.JPG",
+    "IMG_9306.JPEG",
+    "IMG_9398.JPEG",
+    "IMG_9477.JPG",
+    "IMG_9507.JPG",
+    "IMG_9639.JPEG",
+    "att.FwtYP419ApeWIiKq_bjS-QeIxqn-PfvVUOukxotFlk4.jpg",
+    "att.x17_nAFjcl4rZ-2lqF_l7pIJBNVXlOJH21SzY1wvdr4.jpg",
+    "c7096e5b-42ef-43dd-a57c-00f4c54bedae.jpg",
+    "d684c3ed-ed1a-4929-a9d8-8e98fa96042b.jpg",
+    "de120452-1539-4842-bd87-427ab6069247.jpg"
+  ];
+
+  function pickRandom(arr, n) {
+    return [...arr].sort(() => Math.random() - 0.5).slice(0, n);
+  }
+
+  function getGridCount() {
+    const w = window.innerWidth;
+    if (w <= 480) return 6;
+    if (w <= 768) return 9;
+    return 20;
+  }
+
+  function loadPhotos(fade = false) {
+    const bg = document.getElementById('photoBg');
+    const count = getGridCount();
+    const selected = pickRandom(ALL_PHOTOS, count);
+
+    if (fade) {
+      bg.querySelectorAll('img').forEach(img => img.style.opacity = '0');
+      setTimeout(() => {
+        bg.innerHTML = selected.map(f =>
+          `<img src="${BASE}${encodeURIComponent(f)}" alt="" loading="lazy">`
+        ).join('');
+      }, 1500);
+    } else {
+      bg.innerHTML = selected.map(f =>
+        `<img src="${BASE}${encodeURIComponent(f)}" alt="" loading="lazy">`
+      ).join('');
+    }
+  }
+
+  loadPhotos(false);
+  setInterval(() => loadPhotos(true), 5 * 60 * 1000);
+
+  // ── COUNTDOWN ────────────────────────────────────────────
   const weddingDate = new Date('2026-04-18T12:30:00');
   function tick() {
     const diff = weddingDate - new Date();
@@ -310,7 +362,8 @@
   }
   tick(); setInterval(tick, 1000);
 
-  const UPLOAD_URL = "https://bokcvok-droid.github.io/lucie-martin-2026/upload.html";
+  // ── QR KÓD ───────────────────────────────────────────────
+  const UPLOAD_URL = "https://lucieamartin2026.cz/upload.html";
   function initQR() {
     if (typeof QRCode === 'undefined') { setTimeout(initQR, 150); return; }
     document.getElementById('qrcode').innerHTML = '';
