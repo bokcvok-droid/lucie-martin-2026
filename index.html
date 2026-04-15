@@ -118,7 +118,7 @@
     .swatch { display: flex; flex-direction: column; align-items: center; gap: .5rem; }
     .swatch-circle { width: 56px; height: 56px; border-radius: 50%; box-shadow: 0 3px 12px rgba(0,0,0,.15); transition: transform .25s; }
     .swatch-circle:hover { transform: scale(1.12); }
-    .swatch-name { font-size: .7rem; color: var(--dark-l); letter-spacing: .05em; text-transform: uppercase; }
+    .swatch-name { display: none; }
     .dress-note { font-family: Georgia, serif; font-style: italic; color: var(--dark-l); margin-top: 1.4rem; font-size: .9rem; }
 
     .gift-box {
@@ -193,7 +193,14 @@
     </button>
     <div class="accordion-body">
       <div class="accordion-body-inner">
-        <p style="font-family:Georgia,serif;font-style:italic;color:var(--sage);">Program bude brzy doplněn…</p>
+        <p style="font-family:Georgia,serif;font-size:.95rem;color:var(--dark-l);margin-bottom:1rem;">
+          Celý harmonogram si můžete prohlédnout nebo stáhnout níže:
+        </p>
+        <a href="https://pub-88f291442e03440db00b772861f1ed5a.r2.dev/program/Harmonogram%20svatby%2018.04.2026.pdf"
+           target="_blank"
+           style="display:inline-flex;align-items:center;gap:.5rem;background:var(--sage);color:#fff;font-family:Georgia,serif;font-size:.9rem;padding:.8rem 1.4rem;border-radius:8px;text-decoration:none;transition:background .2s;">
+          📄 Otevřít harmonogram (PDF)
+        </a>
       </div>
     </div>
   </div>
@@ -324,7 +331,6 @@
     const bg = document.getElementById('photoBg');
     const count = getGridCount();
     const selected = pickRandom(ALL_PHOTOS, count);
-
     if (fade) {
       bg.querySelectorAll('img').forEach(img => img.style.opacity = '0');
       setTimeout(() => {
