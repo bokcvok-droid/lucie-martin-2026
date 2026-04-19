@@ -52,6 +52,14 @@
     .fi-status.err { color: #a04040; }
     .pbar-wrap { height: 3px; background: #eee; border-radius: 2px; overflow: hidden; margin-top: .35rem; }
     .pbar { height: 100%; background: var(--gold); border-radius: 2px; width: 0; transition: width .3s; }
+    .gallery-link {
+      display: block; text-align: center; margin-top: 1rem;
+      background: rgba(196,149,106,.12); border: 1px solid rgba(196,149,106,.3);
+      border-radius: 8px; padding: .75rem 1rem;
+      color: var(--brown); text-decoration: none; font-size: .9rem;
+      transition: background .2s;
+    }
+    .gallery-link:hover { background: rgba(196,149,106,.22); }
     .back { display: block; text-align: center; margin-top: 1.8rem; color: var(--brown-l); text-decoration: none; font-size: .88rem; }
     .back:hover { color: var(--gold); }
     .done-msg { text-align: center; font-family: Georgia, serif; font-style: italic; color: var(--gold); margin-top: 1.2rem; font-size: 1.1rem; display: none; }
@@ -75,11 +83,13 @@
   <button class="btn-upload" id="uploadBtn" disabled>Nahrát fotky</button>
   <div class="file-list" id="fileList"></div>
   <p class="done-msg" id="doneMsg">Děkujeme za fotky! 💛</p>
+
+  <a href="gallery.html" class="gallery-link">📷 Zobrazit galerii všech fotek →</a>
   <a href="index.html" class="back">← Zpět na svatební web</a>
 </div>
 
 <script>
-  // !! ZMĚŇ NA URL svého Cloudflare Workeru !!
+  // !! URL Cloudflare Workeru !!
   const WORKER = "https://soft-band-c581.bokcvok.workers.dev";
 
   const dropZone  = document.getElementById('dropZone');
@@ -120,14 +130,15 @@
       const pb = document.getElementById(`pb-${i}`);
       st.textContent = 'Nahrávám…'; st.className = 'fi-status';
       try {
-        // 1. Získej klíč a upload URL z Workeru
+        // 1. Získej upload URL z Workeru
         const r = await fetch(`${WORKER}/presign?filename=${encodeURIComponent(f.name)}&type=${encodeURIComponent(f.type)}`);
+        if (!r.ok) throw new Error(`Presign selhal: HTTP ${r.status}`);
         const { uploadUrl } = await r.json();
-        // 2. Nahraj přímo na R2 přes Worker
+        // 2. Nahraj soubor přes PUT na Worker
         await uploadXHR(f, uploadUrl, p => pb.style.width = p + '%');
         st.textContent = '✓ Nahráno'; st.className = 'fi-status ok'; pb.style.width = '100%';
       } catch(e) {
-        st.textContent = '✗ Chyba'; st.className = 'fi-status err'; allOk = false;
+        st.textContent = '✗ Chyba: ' + e.message; st.className = 'fi-status err'; allOk = false;
         console.error(e);
       }
     }
